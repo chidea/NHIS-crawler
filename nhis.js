@@ -23,7 +23,7 @@ async function print_personal_months(browser, page){
   await page.type('#txtUserId', 'chidea1');*/
   await page.waitForNavigation({timeout:0});
   console.log('wait login done');
-  await page.waitFor('span.txt');
+  await page.waitForSelector('span.txt');
   await page.waitFor(1000);
   const [response] = await Promise.all([
     page.waitForNavigation({timeout:0}),
@@ -39,7 +39,16 @@ async function print_personal_months(browser, page){
       await page.click('input#'+input_ids[i]);
       await page.waitFor('#schMm');
     }
-    for(var m=7; m <= 12; m++){
+    let s = 1;
+    let e = 12;
+    if (process.argv.length>2){
+      if (process.argv[2] == 1){
+        e = 6;
+      }else if (process.argv[2] == 2){
+        s = 7;
+      }
+    }
+    for(var m=s; m <= e; m++){
       await page.waitFor('#schMm');
       await page.select('#schMm', ''+m);
       await Promise.all([
